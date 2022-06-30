@@ -29,9 +29,8 @@
 #    include "is31fl3731-simple.h"
 #elif defined(IS31FLCOMMON)
 #    include "is31flcommon.h"
-#endif
-#ifdef IS31FL3733
-#    include "is31fl3733-simple.h"
+#elif defined(SN32F26x)
+#    include "sn32f26x.h"
 #endif
 
 #ifndef LED_MATRIX_LED_FLUSH_LIMIT

@@ -19,13 +19,24 @@
 #include <hal.h>
 
 /* chThdSleepX of zero maps to infinite - so we map to a tiny delay to still yield */
-#define wait_ms(ms)                     \
-    do {                                \
-        if (ms != 0) {                  \
-            chThdSleepMilliseconds(ms); \
-        } else {                        \
-            chThdSleepMicroseconds(1);  \
-        }                               \
+#define wait_ms(ms)                                                         \
+    do {                                                                    \
+        if (ms != 0) {                                                      \
+            if(CH_CFG_ST_RESOLUTION < 32) {                                 \
+                uint32_t limit = (UINT16_MAX / CH_CFG_ST_FREQUENCY) * 1000; \
+                if(ms > limit) {                                            \
+                    chThdSleepMilliseconds(limit);                          \
+                }                                                           \
+                else {                                                      \
+                    chThdSleepMilliseconds(ms);                             \
+                }                                                           \
+            }                                                               \
+            else {                                                          \
+                chThdSleepMilliseconds(ms);                                 \
+            }                                                               \
+        } else {                                                            \
+            chThdSleepMicroseconds(1);                                      \
+        }                                                                   \
     } while (0)
 
 #ifdef WAIT_US_TIMER

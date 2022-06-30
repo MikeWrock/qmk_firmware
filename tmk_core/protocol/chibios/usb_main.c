@@ -340,17 +340,10 @@ static usb_driver_configs_t drivers = {
 #endif
 #ifdef RAW_ENABLE
 #    ifndef RAW_IN_CAPACITY
-#        define RAW_IN_CAPACITY 4
 #    endif
 #    ifndef RAW_OUT_CAPACITY
 #        define RAW_OUT_CAPACITY 4
 #    endif
-#    define RAW_IN_MODE USB_EP_MODE_TYPE_INTR
-#    define RAW_OUT_MODE USB_EP_MODE_TYPE_INTR
-    .raw_driver = QMK_USB_DRIVER_CONFIG(RAW, 0, false),
-#endif
-
-#ifdef MIDI_ENABLE
 #    define MIDI_STREAM_IN_CAPACITY 4
 #    define MIDI_STREAM_OUT_CAPACITY 4
 #    define MIDI_STREAM_IN_MODE USB_EP_MODE_TYPE_BULK
@@ -655,7 +648,7 @@ static bool usb_request_hook_cb(USBDriver *usbp) {
                         break;
 
                     case HID_SET_IDLE:
-                        keyboard_idle = usbp->setup[3]; /* MSB(wValue) */
+                        //keyboard_idle = usbp->setup[3]; /* MSB(wValue) */
                                                         /* arm the timer */
 #ifdef NKRO_ENABLE
                         if (!keymap_config.nkro && keyboard_idle) {

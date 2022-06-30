@@ -16,7 +16,50 @@
 
 #include "bootloader.h"
 
-__attribute__((weak)) void bootloader_jump(void) {}
-__attribute__((weak)) void mcu_reset(void) {}
+#include <hal.h>
+#include "wait.h"
 
-__attribute__((weak)) void enter_bootloader_mode_if_requested(void) {}
+#define SYMVAL(sym) (uint32_t)(((uint8_t *)&(sym)) - ((uint8_t *)0))
+extern uint32_t __ram0_end__;
+#define BOOTLOADER_MAGIC 0xDEADBEEF
+#define MAGIC_ADDR (unsigned long *)(SYMVAL(__ram0_end__) - 4)
+
+__attribute__((weak)) void bootloader_jump(void) {
+    *MAGIC_ADDR = BOOTLOADER_MAGIC;  // set magic flag => reset handler will jump into boot loader
+    // Wait for memory to be set before the reset
+    for(volatile uint32_t i = 0; i < 32; i++){
+        __NOP();
+    }
+    NVIC_SystemReset();
+}
+
+/** \brief Enter bootloader mode if requested
+ *
+ * FIXME: needs doc
+ */
+void enter_bootloader_mode_if_requested(void) {
+    unsigned long *check = MAGIC_ADDR;
+    if (*check == BOOTLOADER_MAGIC) {
+        *check = 0;
+
+        void(*recovery)(void) = (void*)SN32_BOOTLOADER_ADDRESS;
+        recovery();
+
+        while (1)
+            ;
+    }
+}
+
+__attribute__((weak)) void mcu_reset(void) {
+    unsigned long *check = MAGIC_ADDR;
+    if (*check == BOOTLOADER_MAGIC) {
+        *check = 0;
+
+        void(*recovery)(void) = (void*)SN32_BOOTLOADER_ADDRESS;
+        recovery();
+
+        while (1)
+            ;
+    }
+
+}
