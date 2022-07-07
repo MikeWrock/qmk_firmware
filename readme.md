@@ -16,6 +16,29 @@ The docs are powered by [Docsify](https://docsify.js.org/) and hosted on [GitHub
 
 You can request changes by making a fork and opening a [pull request](https://github.com/qmk/qmk_firmware/pulls), or by clicking the "Edit this page" link at the bottom of any page.
 
+## Getting Started
+
+Clone this repo, enter it and:
+
+make git-submodule
+python3 -m pip install --user qmk
+qmk setup
+
+Make my firmware using:
+
+make keychron/k4/rgb/v2:wrock
+
+Flash the firmware:
+
+Go to the sonix-flasher package
+
+pip3 install -r requirements.txt
+fbs run
+First time: Short the boot pins under the spacebar and plug in the keyboard
+After flashing:
+Fn+Esc to go to bootloader mode
+use 0x00 offset. Select the .bin in the qmk_firmware folder
+
 ## Supported Keyboards
 
 * [Keychron k4V2](/keyboards/keychron/)
