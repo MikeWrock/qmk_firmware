@@ -21,7 +21,11 @@ You can request changes by making a fork and opening a [pull request](https://gi
 Clone this repo, enter it and:
 
 make git-submodule
+
+
 python3 -m pip install --user qmk
+
+
 qmk setup
 
 Make my firmware using:
