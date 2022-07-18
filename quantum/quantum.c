@@ -292,6 +292,9 @@ bool process_record_quantum(keyrecord_t *record) {
 #ifdef CAPS_WORD_ENABLE
             process_caps_word(keycode, record) &&
 #endif
+#ifdef UNDERSCORE_WORD_ENABLE
+            process_underscore_word(keycode, record) &&
+#endif
 #if defined(UNICODE_COMMON_ENABLE)
             process_unicode_common(keycode, record) &&
 #endif

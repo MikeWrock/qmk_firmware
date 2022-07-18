@@ -237,6 +237,10 @@ extern layer_state_t layer_state;
 #    include "caps_word.h"
 #    include "process_caps_word.h"
 #endif
+#ifdef UNDERSCORE_WORD_ENABLE
+#    include "underscore_word.h"
+#    include "process_underscore_word.h"
+#endif
 
 // For tri-layer
 void          update_tri_layer(uint8_t layer1, uint8_t layer2, uint8_t layer3);

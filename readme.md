@@ -25,6 +25,7 @@ make git-submodule
 
 python3 -m pip install --user qmk
 
+echo 'PATH="$HOME/.local/bin:$PATH"' >> $HOME/.bashrc && source $HOME/.bashrc
 
 qmk setup
 
@@ -36,11 +37,22 @@ Flash the firmware:
 
 Go to the sonix-flasher package
 
+remove hid from requirements.txt
+
 pip3 install -r requirements.txt
+
+sudo apt install libhidapi-\*
+
+cp ../qmk\_firmaware/50-qmk.rules /etc/udev/rules.d/
+
 fbs run
+
 First time: Short the boot pins under the spacebar and plug in the keyboard
+
 After flashing:
+
 Fn+Esc to go to bootloader mode
+
 use 0x00 offset. Select the .bin in the qmk_firmware folder
 
 ## Supported Keyboards

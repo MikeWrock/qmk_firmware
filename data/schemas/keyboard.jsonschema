@@ -102,6 +102,16 @@
                 "idle_timeout": {"$ref": "qmk.definitions.v1#/unsigned_int"},
             },
         },
+        "underscore_word": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "enabled": {"type": "boolean"},
+                "both_shifts_turns_on": {"type": "boolean"},
+                "double_tap_shift_turns_on": {"type": "boolean"},
+                "idle_timeout": {"$ref": "qmk.definitions.v1#/unsigned_int"},
+            },
+        },
         "combo": {
             "type": "object",
             "properties": {
