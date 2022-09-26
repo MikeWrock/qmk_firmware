@@ -21,30 +21,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // - Show status of mode switch
 // - Turn LEDs off durring USB suspend
 static bool mode_leds_show = true;
-static bool mode_leds_windows = true;
+// static bool mode_leds_windows = true;
 
-static void mode_leds_update(void){
-    writePin(LED_WIN_PIN, mode_leds_show && mode_leds_windows);
-    writePin(LED_MAC_PIN, mode_leds_show && !mode_leds_windows);
+static void mode_leds_update(bool windows){
+    writePin(LED_WIN_PIN, windows);
+    writePin(LED_MAC_PIN, !windows);
 }
 
 bool dip_switch_update_user(uint8_t index, bool active){
     if(index == 0) {
         if(active) { // Windows mode
-        // Update mode and update leds
-            mode_leds_windows = active;
-            mode_leds_update();
+            mode_leds_update(active);
             layer_move(0);
         } else { // Mac mode
-        // Update mode and update leds
-            mode_leds_windows = active;
-            mode_leds_update();
+            mode_leds_update(active);
             layer_move(2);
         }
-
-        // Update mode and update leds
-        mode_leds_windows = active;
-        mode_leds_update();
     }
     return true;
 }
@@ -66,7 +58,7 @@ void keyboard_pre_init_kb(void) {
 void suspend_power_down_kb(void) {
     // Turn leds off
     mode_leds_show = false;
-    mode_leds_update();
+    // mode_leds_update();
 
     // Suspend RGB
     rgb_matrix_set_suspend_state(true);
