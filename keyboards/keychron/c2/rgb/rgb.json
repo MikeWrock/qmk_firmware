@@ -42,6 +42,7 @@
           ["DIGITAL_RAIN", 1],
           ["SOLID_REACTIVE_SIMPLE", 1],
           ["SOLID_REACTIVE", 1],
+          ["SOLID_REACTIVE2", 1],
           ["SOLID_REACTIVE_WIDE", 1],
           ["SOLID_REACTIVE_MULTIWIDE", 1],
           ["SOLID_REACTIVE_CROSS", 1],

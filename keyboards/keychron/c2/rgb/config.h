@@ -57,7 +57,7 @@
 #define RGB_DISABLE_WHEN_USB_SUSPENDED true
 
 /* Enable NKRO by default */
-#define FORCE_NKRO
+// #define FORCE_NKRO
 
 /* Memory Optimizations  */
 #define DYNAMIC_KEYMAP_LAYER_COUNT 4
@@ -115,4 +115,13 @@
 #define ENABLE_RGB_MATRIX_SOLID_SPLASH
 #define ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
 
+/* RGB default values */
+#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 255 // limits maximum brightness of LEDs to 200 out of 255. If not defined maximum brightness is set to 255
+#define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_SOLID_REACTIVE // Sets the default mode, if none has been set
+#define RGB_MATRIX_STARTUP_HUE 150 // Sets the default hue value, if none has been set
+#define RGB_MATRIX_STARTUP_SAT 255 // Sets the default saturation value, if none has been set
+#define RGB_MATRIX_STARTUP_VAL RGB_MATRIX_MAXIMUM_BRIGHTNESS // Sets the default brightness value, if none has been set
+#define RGB_MATRIX_STARTUP_SPD 127 // Sets the default animation speed, if none has been set
+
+#define RGB_MATRIX_CUSTOM_USER
 #include "config_led.h"
