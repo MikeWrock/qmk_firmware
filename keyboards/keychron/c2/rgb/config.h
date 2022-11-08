@@ -28,6 +28,8 @@
 #define PRODUCT             \x43\x32 RGB
 #define DESCRIPTION         \x43\x32 RGB QMK
 
+#define TAPPING_TERM 150
+
 /* key matrix size */
 #define MATRIX_ROWS         6
 #define MATRIX_COLS         21

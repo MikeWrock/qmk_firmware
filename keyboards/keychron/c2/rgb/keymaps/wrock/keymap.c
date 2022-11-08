@@ -28,7 +28,19 @@ enum layer_names {
     MAC_FN      = 4,
 };
 
-#define KC_TASK LGUI(KC_TAB)        // Task viewerfffff
+
+enum custom_keycodes {
+    SOURCE_WORKSPACE = SAFE_RANGE,
+    COLCON_TEST,
+};
+
+// Tap Dance declarations
+enum {
+    TD_COLON,
+};
+
+
+#define KC_TASK LGUI(KC_TAB)        // Task viewer
 #define KC_FLXP LGUI(KC_E)          // Windows file explorer
 #define KC_CRTN LGUI(KC_C)          // Cortana | Microsoft Teams
 #define KC_SNIP LGUI(LSFT(KC_S))    // Windows snip tool
@@ -39,7 +51,44 @@ enum layer_names {
 #define KC_MSCR LSFT(LGUI(KC_3))    // Mac screenshot
 #define KC_MSNP LSFT(LGUI(KC_4))    // Mac snip tool
 
+// Tap Dance definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+    // Tap once for '.', twice for ':'
+    [TD_COLON] = ACTION_TAP_DANCE_DOUBLE(KC_PDOT, KC_COLN),
+};
+
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+
+    case SOURCE_WORKSPACE:
+        if (record->event.pressed) {
+            // when keycode SOURCE_WORKSPACE is pressed
+            send_string_with_delay_P("source /opt/ros/foxy/setup.bash && source install/setup.bash"SS_TAP(X_ENT), 232);
+            // SEND_STRING("source /opt/ros/foxy/setup.bash && source install/setup.bash"SS_TAP(X_ENT));
+        } else {
+            // when keycode SOURCE_WORKSPACE is released
+        }
+        break;
+
+    case COLCON_TEST:
+        if (record->event.pressed) {
+            // when keycode COLCON_TEST is pressed
+            send_string_with_delay_P("source /opt/ros/foxy/setup.bash && source install/setup.bash"SS_TAP(X_ENT), 232);
+            send_string_with_delay_P("colcon test --event-handlers console_direct+ desktop_notification- --packages-select pounce && colcon test-result --verbose"SS_TAP(X_ENT),232);
+            // SEND_STRING("source /opt/ros/foxy/setup.bash && source install/setup.bash"SS_TAP(X_ENT));
+            // SEND_STRING("colcon test --event-handlers console_direct+ desktop_notification- --packages-select pounce && colcon test-result --verbose"SS_TAP(X_ENT));
+            // SEND_STRING(SS_TAP(SOURCE_WORKSPACE)"colcon test --event-handlers console_direct+ desktop_notification- --packages-select pounce && colcon test-result --verbose"SS_TAP(X_ENT));
+        } else {
+            // when keycode COLCON_TEST is released
+        }
+        break;
+
+    }
+    return true;
+};
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+
     /*  Windows layout
     +-----------------------------------------------------------------------------------------------------------------+
     | ESC |  | F1 | F2 | F3 | F4 | | F5 | F6 | F7 | F8 | | F9| F10| F11| F12|  | |PSCR|CORT|RGB |                     |
@@ -63,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         {   KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,  KC_DEL,   KC_END,   KC_PGDN, KC_P7,   KC_P8,   KC_P9,   KC_PPLS },
         {   KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_NO,    KC_ENT,   KC_NO,    KC_NO,    KC_NO,   KC_P4,   KC_P5,   KC_P6,   KC_NO   },
         {   KC_LSFT,  KC_NO,    KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_NO,    KC_RSFT,  KC_NO,    KC_UP,    KC_NO,   KC_P1,   KC_P2,   KC_P3,   KC_PENT },
-        {   KC_LCTL,  KC_LGUI,  KC_LALT,  KC_NO,    KC_NO,    KC_NO,    KC_SPC,   KC_NO,    KC_NO,    KC_RALT,  KC_RGUI,  MO(1),    KC_NO,    KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT, KC_NO,   KC_P0,   KC_PDOT, KC_NO   }
+        {   KC_LCTL,  KC_LGUI,  KC_LALT,  KC_NO,    KC_NO,    KC_NO,    KC_SPC,   KC_NO,    KC_NO,    KC_RALT,  KC_RGUI,  MO(1),    KC_NO,    KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT, KC_NO,   KC_P0,   TD(TD_COLON), KC_NO }
     },
 
     [WIN_FN] = { // Windows Fn overlay
@@ -77,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     },
     [WIN_ALT_FN] = { // Windows Fn overlay
         /*  0         1         2         3         4         5         6         7         8         9         10        11        12        13        14        15        16       17        18        19        20      */
-        {   DM_RSTP,    KC_F1,    KC_F2,    DM_REC1,  DM_REC2,   KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   _______,  _______,  _______,  RGB_TOG, _______,  _______,  _______,  _______ },
+        {   DM_RSTP,KC_F1,  KC_F2,    DM_REC1,  DM_REC2,SOURCE_WORKSPACE,COLCON_TEST,KC_F7,   KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12, _______,  _______,  _______,  RGB_TOG, _______,  _______,  _______,  _______ },
         {   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  RGB_HUI,  RGB_VAI,  RGB_SAI, RGB_M_TW, _______,  _______,  _______ },
         {   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  RGB_HUD,  RGB_VAD,  RGB_SAD, RGB_M_X,  RGB_M_G,  RGB_M_T,  _______ },
         {   _______,  KC_B,     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______, RGB_M_SW, RGB_M_SN, RGB_M_K,  _______ },
